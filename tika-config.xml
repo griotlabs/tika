@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+    <parsers>
+        <parser class="org.apache.tika.parser.DefaultParser">
+            <parser-exclude class="org.apache.tika.parser.pdf.PDFParser"/>
+        </parser>
+        <parser class="org.apache.tika.parser.pdf.PDFParser">
+            <params>
+                <param name="ocrStrategy" type="string">auto</param>
+                <param name="extractInlineImages" type="bool">false</param>
+                <param name="extractUniqueInlineImagesOnly" type="bool">true</param>
+                <param name="catchIntermediateExceptions" type="bool">true</param>
+            </params>
+        </parser>
+    </parsers>
+    <fetchers>
+        <fetcher class="org.apache.tika.pipes.fetcher.gcs.GCSFetcher">
+            <params>
+                <name>gcsf</name>
+                <projectId>GCS_PROJECT_ID</projectId>
+                <bucket>GCS_UPLOAD_BUCKET</bucket>
+            </params>
+        </fetcher>
+        <fetcher class="org.apache.tika.pipes.fetcher.s3.S3Fetcher">
+            <params>
+                <name>s3f</name>
+                <region>auto</region>
+                <bucket>S3_UPLOAD_BUCKET</bucket>
+                <endpointConfigurationService>AWS_ENDPOINT_URL</endpointConfigurationService>
+                <credentialsProvider>key_secret</credentialsProvider>
+                <accessKey>AWS_ACCESS_KEY_ID</accessKey>
+                <secretKey>AWS_SECRET_ACCESS_KEY</secretKey>
+            </params>
+        </fetcher>
+    </fetchers>
+    <emitters>
+        <emitter class="org.apache.tika.pipes.emitter.gcs.GCSEmitter">
+            <params>
+                <name>gcse</name>
+                <projectId>GCS_PROJECT_ID</projectId>
+                <bucket>GCS_CONTENT_BUCKET</bucket>
+            </params>
+        </emitter>
+        <emitter class="org.apache.tika.pipes.emitter.s3.S3Emitter">
+            <params>
+                <name>s3e</name>
+                <region>auto</region>
+                <bucket>S3_CONTENT_BUCKET</bucket>
+                <endpointConfigurationService>AWS_ENDPOINT_URL</endpointConfigurationService>
+                <credentialsProvider>key_secret</credentialsProvider>
+                <accessKey>AWS_ACCESS_KEY_ID</accessKey>
+                <secretKey>AWS_SECRET_ACCESS_KEY</secretKey>
+            </params>
+        </emitter>
+    </emitters>
+    <server>
+        <params>
+            <enableUnsecureFeatures>true</enableUnsecureFeatures>
+        </params>
+    </server>
+    <pipes>
+        <params>
+            <tikaConfig>./config/tika-config.xml</tikaConfig>
+            <timeoutMillis>300000</timeoutMillis>
+        </params>
+    </pipes>
+</properties>
