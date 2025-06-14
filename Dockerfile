@@ -1,4 +1,5 @@
 ARG UID_GID="35002:35002"
+ARG TIKA_VERSION=3.1.0
 
 FROM ubuntu:oracular AS base
 
